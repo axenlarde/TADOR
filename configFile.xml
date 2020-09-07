@@ -1,0 +1,23 @@
+﻿<!--
+TADOR Overal configuration file
+-->
+
+<xml>
+	<config>
+		<!--Misc-->
+		<log4j>DEBUG</log4j><!--Logging level : ERROR,INFO,DEBUG-->
+		<csvsplitter>,</csvsplitter>
+		<maxphonereset>2</maxphonereset><!--Max phone to reset at the same time-->
+		<timebetweenreset>30</timebetweenreset><!--In second-->
+		<timetowait>15</timetowait><!--In minute-->
+		<justreset>false</justreset><!--If true we just reset the provided office without changing the load name-->
+		<!--CUCM parameters-->
+		<cucmip>10.0.1.172</cucmip>
+		<cucmport>8443</cucmport><!--Port to contact the CUCM server-->
+		<username>TADOR</username><!--Username to contact the CUCM server-->
+		<password>CCMCisco92</password><!--Password in clear !!!!Warning : keep it secret!!!!-->
+		<axlversion>105</axlversion>
+		<!--RISPORT parameters-->
+		<rismaxphonerequest>999</rismaxphonerequest><!--Max Phone response per request-->
+	</config>
+</xml>
