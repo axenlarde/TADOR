@@ -9,8 +9,8 @@ TADOR Overal configuration file
 		<csvsplitter>,</csvsplitter>
 		<maxphonereset>2</maxphonereset><!--Max phone to reset at the same time-->
 		<timebetweenreset>30</timebetweenreset><!--In second-->
-		<timetowait>15</timetowait><!--In minute-->
-		<justreset>false</justreset><!--If true we just reset the provided office without changing the load name-->
+		<timetowait>1</timetowait><!--In minute-->
+		<mode>full</mode><!--full,reset,survey--><!--reset : just reset the phone, survey: just survey the phone, full:survey, configure phone load, reset and another survey-->
 		<!--CUCM parameters-->
 		<cucmip>10.0.1.172</cucmip>
 		<cucmport>8443</cucmport><!--Port to contact the CUCM server-->

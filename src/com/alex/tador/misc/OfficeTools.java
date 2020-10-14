@@ -16,6 +16,7 @@ import com.alex.tador.misc.BasicPhone.PhoneStatus;
 import com.alex.tador.risport.RisportTools;
 import com.alex.tador.utils.UsefulMethod;
 import com.alex.tador.utils.Variables;
+import com.alex.tador.utils.Variables.Protocol;
 
 
 /**
@@ -35,7 +36,7 @@ public class OfficeTools
 		
 		ArrayList<BasicPhone> l = new ArrayList<BasicPhone>();
 		
-		String request = "select d.name, d.description, tm.name as model from device d, devicepool dp, typemodel tm where dp.pkid=d.fkdevicepool and tm.enum=d.tkmodel and d.tkClass='1' and dp.name='"+DevicePoolName+"'";
+		String request = "select d.name, d.description, tm.name as model, tdp.name as protocol from device d, devicepool dp, typemodel tm, typedeviceprotocol tdp where dp.pkid=d.fkdevicepool and tm.enum=d.tkmodel and d.tkClass='1' and tdp.enum=d.tkdeviceprotocol and dp.name='"+DevicePoolName+"'";
 		
 		try
 			{
@@ -43,7 +44,7 @@ public class OfficeTools
 			
 			for(Object o : reply)
 				{
-				BasicPhone bp = new BasicPhone("TBD", "", "");
+				BasicPhone bp = new BasicPhone("TBD", "", "", Protocol.sip);
 				Element rowElement = (Element) o;
 				NodeList list = rowElement.getChildNodes();
 				
@@ -60,6 +61,10 @@ public class OfficeTools
 					else if(list.item(i).getNodeName().equals("model"))
 						{
 						bp.setModel(list.item(i).getTextContent());
+						}
+					else if(list.item(i).getNodeName().equals("protocol"))
+						{
+						bp.setProtocol(Protocol.valueOf(list.item(i).getTextContent().toLowerCase()));
 						}
 					}
 				Variables.getLogger().debug("Phone found : "+bp.getName());
@@ -142,6 +147,8 @@ public class OfficeTools
 					if(bp.getName().equals(risBP.getName()))
 						{
 						srcFound = true;
+						bp.setIp(risBP.getIp());
+						bp.setLoadID(risBP.getLoadID());
 						break;
 						}
 					}
@@ -168,13 +175,13 @@ public class OfficeTools
 			BufferedWriter csvBuffer = new BufferedWriter(new FileWriter(new File(Variables.getMainDirectory()+"/"+fileName+".csv"), false));
 			
 			//FirstLine
-			csvBuffer.write("Device Pool"+splitter+"Device Name"+splitter+"Device Type"+splitter+"Status Before"+splitter+"Status After"+splitter+"Is OK"+cr);
+			csvBuffer.write("Device Pool"+splitter+"Device Name"+splitter+"Type"+splitter+"Protocol"+splitter+"IP"+splitter+"Load ID"+splitter+"Status Before"+splitter+"Status After"+splitter+"Is OK"+cr);
 			
 			for(Office o : officeList)
 				{
 				for(BasicPhone bp : o.getPhoneList())
 					{
-					csvBuffer.write(o.getName()+splitter+bp.getName()+splitter+bp.getModel()+splitter+bp.getFirstStatus()+splitter+bp.getStatus()+splitter+bp.isOK()+cr);
+					csvBuffer.write(o.getName()+splitter+bp.getName()+splitter+bp.getModel()+splitter+bp.getProtocol()+splitter+bp.getIp()+splitter+bp.getLoadID()+splitter+bp.getFirstStatus()+splitter+bp.getStatus()+splitter+bp.isOK()+cr);
 					}
 				}
 			

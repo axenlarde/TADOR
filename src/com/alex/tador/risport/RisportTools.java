@@ -51,6 +51,7 @@ public class RisportTools
 										d.getDescription(),
 										d.getModel().toString(),
 										d.getIPAddress().getItem().get(0).getIP(),
+										d.getActiveLoadID(),
 										d.getStatus().name().toLowerCase().replace("_", "")));
 								
 								Variables.getLogger().debug("Found "+d.getName()+" : "+d.getStatus());

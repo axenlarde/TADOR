@@ -1,11 +1,8 @@
 package com.alex.tador.utils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -24,8 +21,8 @@ import com.alex.tador.axl.AXLTools;
 import com.alex.tador.misc.CUCM;
 import com.alex.tador.misc.Firmware;
 import com.alex.tador.misc.Office;
-import com.alex.tador.risport.RisportTools;
 import com.alex.tador.utils.Variables.CucmVersion;
+import com.alex.tador.utils.Variables.Protocol;
 import com.cisco.schemas.ast.soap.RISService70;
 import com.cisco.schemas.ast.soap.RisPortType;
 
@@ -252,7 +249,7 @@ public class UsefulMethod
 				{
 				String line = buffer.readLine();
 				if(line == null)break;
-				officeList.add(new Office(line));
+				if(!line.isEmpty())officeList.add(new Office(line));
 				}
 			
 			Variables.getLogger().debug(officeList.size()+ " offices found in the database");
@@ -291,19 +288,26 @@ public class UsefulMethod
 					 * First we check for duplicates
 					 */
 					String fName = UsefulMethod.getItemByName("name", tab);
+					Protocol p = Protocol.valueOf(UsefulMethod.getItemByName("protocol", tab));
+					
 					boolean found = false;
 					for(Firmware f : firmwareList)
 						{
 						if(f.getName().equals(fName))
 							{
-							Variables.getLogger().debug("Duplicate found, do not adding the device : "+fName);
-							found = true;
-							break;
+							if(f.getProtocol().equals(p))
+								{
+								Variables.getLogger().debug("Duplicate found, do not adding the device : "+fName+" "+p.name());
+								found = true;
+								break;
+								}
 							}
 						}
 					if(found)continue;
 					
-					firmwareList.add(new Firmware(fName, UsefulMethod.getItemByName("firmwarename", tab)));
+					firmwareList.add(new Firmware(fName,
+							p,
+							UsefulMethod.getItemByName("firmwarename", tab)));
 					}
 				catch (Exception e)
 					{
@@ -618,11 +622,11 @@ public class UsefulMethod
 	 * @param deviceType
 	 * @throws Exception 
 	 */
-	public static String getFirmware(String deviceType) throws Exception
+	public static String getFirmware(String deviceType, Protocol protocol) throws Exception
 		{
 		for(Firmware f : Variables.getFirmwareList())
 			{
-			if(f.getName().equals(deviceType))return f.getFirmware();
+			if((f.getName().equals(deviceType)) && (f.getProtocol().equals(protocol)))return f.getFirmware();
 			}
 		
 		throw new Exception("Firmware not found for device : "+deviceType);

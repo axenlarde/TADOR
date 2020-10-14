@@ -6,10 +6,12 @@ File used to list the different divices and their firmware
 	<devices>
 		<device>
 			<name>Cisco 7942</name>
+			<protocol>sccp</protocol>
 			<firmwarename>SCCP42.9-4-2SR1-1S</firmwarename>
 		</device>
 		<device>
 			<name>Cisco IP Communicator</name>
+			<protocol>sccp</protocol>
 			<firmwarename>yeah.toto-4.2</firmwarename>
 		</device>
 	</devices>

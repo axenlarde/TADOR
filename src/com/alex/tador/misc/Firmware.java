@@ -1,5 +1,7 @@
 package com.alex.tador.misc;
 
+import com.alex.tador.utils.Variables.Protocol;
+
 /**
  * @author Alexandre RATEL
  *
@@ -10,12 +12,16 @@ public class Firmware
 	/**
 	 * Variables
 	 */
+	
+	
 	private String name,firmware;
+	private Protocol protocol;
 
-	public Firmware(String name, String firmware)
+	public Firmware(String name, Protocol protocol, String firmware)
 		{
 		super();
 		this.name = name;
+		this.protocol = protocol;
 		this.firmware = firmware;
 		}
 
@@ -27,6 +33,11 @@ public class Firmware
 	public String getFirmware()
 		{
 		return firmware;
+		}
+
+	public Protocol getProtocol()
+		{
+		return protocol;
 		}
 	
 	

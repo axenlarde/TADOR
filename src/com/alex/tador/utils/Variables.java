@@ -56,6 +56,18 @@ public class Variables
 		query
 		};
 		
+	public enum Protocol
+		{
+		sip,
+		sccp
+		};
+		
+	public enum Mode
+		{
+		full,
+		reset,
+		survey
+		};
 		
 	//Misc
 	private static String softwareName;
